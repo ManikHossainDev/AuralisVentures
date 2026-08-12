@@ -1,23 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import ProviderContent from "@/redux/ProviderContent";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSerif = DM_Serif_Display({
+  variable: "--font-serif",
   subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
-  title: 'Bangali-pola',
-  description: 'Ecommerce website for Bangali-pola, t-shirt sales platform for Bengali New Year',
-}
-
+  title: "Together Baby App | Auralis Ventures",
+  description:
+    "Your all-in-one companion for tracking your baby's daily activities, milestones, and development.",
+};
 
 export default function RootLayout({
   children,
@@ -25,13 +27,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-       <ProviderContent>
-       {children}
-        </ProviderContent>
+    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
+      <body className="antialiased font-sans">
+        <ProviderContent>{children}</ProviderContent>
       </body>
     </html>
   );

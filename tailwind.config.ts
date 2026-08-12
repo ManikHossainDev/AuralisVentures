@@ -9,12 +9,24 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["DM Serif Display", "Georgia", "serif"],
-        sans: ["DM Sans", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "DM Serif Display", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "DM Sans", "system-ui", "sans-serif"],
       },
       colors: {
         sage: {
           DEFAULT: "#4a7c59",
+          light: "#e8f2eb",
+          mid: "#8bb89a",
+          dark: "#2d5038",
+        },
+        cream: "#f9f7f3",
+        peach: {
+          DEFAULT: "#f5e6dc",
+          dark: "#b86a3a",
+        },
+        lilac: {
+          DEFAULT: "#ede8f5",
+          dark: "#6e52a8",
         },
       },
       borderRadius: {

@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
 export type TUser = {
@@ -10,12 +9,11 @@ export type TUser = {
   id: string;
 };
 
-// Define the type for the auth state
 type TAuthState = {
   user: TUser | null;
   token: string | null;
   onlineUser: string[];
-  socketConnection: any;
+  socketConnection: unknown;
 };
 
 const initialState: TAuthState = {
@@ -25,12 +23,14 @@ const initialState: TAuthState = {
   socketConnection: null,
 };
 
-// Create the slice
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (
+      state,
+      action: PayloadAction<{ user: TUser; token: string }>
+    ) => {
       const { user, token } = action.payload;
       state.user = user;
       state.token = token;
@@ -40,10 +40,10 @@ const authSlice = createSlice({
       state.token = null;
       state.socketConnection = null;
     },
-    setOnlineUser: (state, action) => {
+    setOnlineUser: (state, action: PayloadAction<string[]>) => {
       state.onlineUser = action.payload;
     },
-    setSocketConnection: (state, action) => {
+    setSocketConnection: (state, action: PayloadAction<unknown>) => {
       state.socketConnection = action.payload;
     },
   },
@@ -54,7 +54,6 @@ export const { setUser, logout, setOnlineUser, setSocketConnection } =
 
 export default authSlice.reducer;
 
-// Selector to get the current user state
 export const selectCurrentUser = (state: RootState) => state.auth.user;
 export const selectToken = (state: RootState) => state.auth.token;
 export const selectOnlineUsers = (state: RootState) => state.auth.onlineUser;
