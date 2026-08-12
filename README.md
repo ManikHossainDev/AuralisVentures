@@ -1,4 +1,4 @@
-# Bangali Pola
+# AuralisVentures
 
 An Ecommerce website for Bangali-pola, a t-shirt sales platform for Bengali New Year.
 
