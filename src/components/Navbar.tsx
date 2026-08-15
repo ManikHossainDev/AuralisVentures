@@ -1,88 +1,90 @@
 "use client";
 
-import { useState } from "react";
-import { RiMenuLine, RiCloseLine } from "react-icons/ri";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  RiSearchLine,
+  RiTranslate2,
+  RiShoppingBagLine,
+  RiUser3Line,
+} from "react-icons/ri";
 import logo from "@asset/allPhoto/Logo.png";
+import { MdNotificationsActive } from "react-icons/md";
 
-const links = ["Features", "Baby Journey", "How It Works", "Pricing", "Reviews"];
-
-export default function Navbar() {
-  const [open, setOpen] = useState(false);
-
+const Navbar = () => {
   return (
-    <nav className="sticky top-1 z-50 bg-[#FFFFFF]">
-      <div className="xl:container mx-auto px-5 sm:px-8 flex items-center justify-between h-16">
+    <nav className="sticky top-0 z-50 w-full border-t border-black bg-[#F0FDFA]">
+      <div className="mx-auto flex w-full items-center justify-between px-4 py-2 sm:px-6 lg:px-8 xl:container xl:px-0">
         {/* Logo */}
-        <Link href="#">
+        <Link href="/" className="w-[300px] h-auto flex shrink-0 items-center">
           <Image
             src={logo}
-            alt="Together Baby Logo"
-            width={80}
-            height={80}
-            className="w-16 h-14 object-contain"
+            alt="Aries Ventures"
+            width={200}
+            height={200}
+            className="h-auto w-auto object-center"
+            priority
           />
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-8">
-          {links.map((l) => (
-            <li key={l}>
-              <Link
-                href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
-                className="text-sm text-[#6b7c6e] hover:text-[#4a7c59] transition-colors"
-              >
-                {l}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* Search Bar */}
+        <div className="absolute left-1/2 hidden -translate-x-1/2 sm:block">
+          <div className="flex h-12 w-[300px] items-center gap-2.5 rounded-full border border-[#DCEAE7] bg-white/30 px-4">
+            <RiSearchLine className="h-5 w-5 shrink-0 text-[#9AA8A5]" />
 
-        {/* CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <Link
-            href="#pricing"
-            className="bg-[#344F47] text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-[#2d5038] transition-colors"
-          >
-            Download App
-          </Link>
+            <input
+              type="text"
+              placeholder="Search for attar, cosmetics, gadgets..."
+              className="w-full bg-transparent font-[Monda] text-base font-normal leading-none outline-none placeholder:text-[#9AA8A5]"
+            />
+          </div>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          aria-label="Toggle navigation menu"
-          className="md:hidden text-[#4a7c59] text-2xl cursor-pointer"
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <RiCloseLine /> : <RiMenuLine />}
-        </button>
+        {/* Right Actions */}
+        <div className="ml-auto flex items-center gap-4">
+          {/* Language */}
+          <button
+            type="button"
+            aria-label="Language"
+            className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#DCEAE7] bg-white/30 p-2.5 text-[#667572] transition hover:bg-white/60 sm:w-auto sm:gap-2 sm:px-3.5"
+          >
+            <RiTranslate2 className="h-5 w-5" />
+
+            <span className="hidden font-[Monda] text-sm sm:inline">
+              Eng
+            </span>
+          </button>
+
+          {/* Shopping Bag */}
+          <button
+            type="button"
+            aria-label="Shopping bag"
+            className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#DCEAE7] bg-white/30 p-2.5 text-[#667572] transition hover:bg-white/60"
+          >
+            <RiShoppingBagLine className="h-7 w-7" />
+          </button>
+
+          {/* Notification */}
+          <button
+            type="button"
+            aria-label="Notifications"
+            className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#DCEAE7] bg-white/30 p-2.5 text-[#667572] transition hover:bg-white/60"
+          >
+            <MdNotificationsActive className="h-7 w-7" />
+          </button>
+
+          {/* User */}
+          <button
+            type="button"
+            aria-label="Profile"
+            className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#DCEAE7] bg-white/30 p-2.5 text-[#667572] transition hover:bg-white/60"
+          >
+            <RiUser3Line className="h-7 w-7" />
+          </button>
+        </div>
       </div>
-
-      {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden bg-white border-t border-[#e4ece6] px-5 pb-5 pt-3">
-          <ul className="flex flex-col gap-4">
-            {links.map((l) => (
-              <li key={l}>
-                <Link
-                  href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
-                  onClick={() => setOpen(false)}
-                  className="text-sm text-[#6b7c6e] hover:text-[#4a7c59]"
-                >
-                  {l}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <Link
-            href="#pricing"
-            className="mt-4 block text-center bg-[#4a7c59] text-white text-sm font-medium px-5 py-3 rounded-full"
-          >
-            Download App
-          </Link>
-        </div>
-      )}
     </nav>
   );
-}
+};
+
+export default Navbar;

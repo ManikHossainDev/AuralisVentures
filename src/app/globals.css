@@ -1,33 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400..700&display=swap');
 @import "tailwindcss";
-@config "../../tailwind.config.ts";
-
-@theme {
-  --font-serif: var(--font-serif), "DM Serif Display", Georgia, serif;
-  --font-sans: var(--font-sans), "DM Sans", system-ui, sans-serif;
-
-  --color-sage: #4a7c59;
-  --color-sage-light: #e8f2eb;
-  --color-sage-mid: #8bb89a;
-  --color-sage-dark: #2d5038;
-  --color-cream: #f9f7f3;
-  --color-warm-white: #ffffff;
-  --color-text: #1a2b1e;
-  --color-muted: #6b7c6e;
-  --color-border: #e4ece6;
-  --color-peach: #f5e6dc;
-  --color-peach-dark: #b86a3a;
-  --color-lilac: #ede8f5;
-  --color-lilac-dark: #6e52a8;
-
-  --radius-4xl: 2rem;
-}
 
 :root {
   --sage: #4a7c59;
   --sage-light: #e8f2eb;
   --sage-mid: #8bb89a;
   --sage-dark: #2d5038;
-  --cream: #f9f7f3;
+  --cream: #FAFAFA;
   --warm-white: #ffffff;
   --text: #1a2b1e;
   --muted: #6b7c6e;
@@ -38,13 +17,14 @@
   --lilac-dark: #6e52a8;
 }
 
-html { 
+html {
   scroll-behavior: smooth;
   scroll-padding-top: 100px;
 }
 
 body {
-  font-family: var(--font-sans), 'DM Sans', sans-serif;
+  font-family: "Monda", sans-serif;
+  font-optical-sizing: auto;
   background-color: var(--cream);
   color: var(--text);
   -webkit-font-smoothing: antialiased;

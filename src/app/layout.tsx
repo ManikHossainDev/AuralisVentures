@@ -16,9 +16,9 @@ const dmSerif = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Together Baby App | Auralis Ventures",
+  title: "AuralisVentures",
   description:
-    "Your all-in-one companion for tracking your baby's daily activities, milestones, and development.",
+    "Auralis Ventures is a leading multi-category e-commerce platform committed to delivering quality products through a seamless shopping experience and dependable, fast delivery.",
 };
 
 export default function RootLayout({
