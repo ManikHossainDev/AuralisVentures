@@ -1,9 +1,11 @@
+import FeatureBar from "@/components/home/FeatureBar";
+import Herosection from "@/components/home/herosection";
 const Page = () => {
  return (
  <div>
- <h2>Welcome to the Page page</h2>
+   <Herosection />
+   <FeatureBar />
  </div>
  );
 };
-
 export default Page;

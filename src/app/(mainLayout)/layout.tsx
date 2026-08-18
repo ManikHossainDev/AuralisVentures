@@ -4,7 +4,7 @@ import React from "react";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <section>
+    <section className="">
       <div className="">
         <Navbar />
       </div>
