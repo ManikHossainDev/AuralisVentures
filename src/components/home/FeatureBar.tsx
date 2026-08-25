@@ -33,7 +33,7 @@ const features = [
 const FeatureBar = () => {
   return (
     <div className="w-full py-5">
-      <div className="xl:container mx-auto grid w-full grid-cols-2 sm:grid-cols-5  xl:grid-cols-5 items-center gap-2  px-2">
+      <div className="xl:container px-2 xl:px-0 mx-auto grid w-full grid-cols-2 sm:grid-cols-5 xl:gap-12  xl:grid-cols-5 items-center gap-2 ">
         {features.map((item, index) => {
           const Icon = item.icon;
 
