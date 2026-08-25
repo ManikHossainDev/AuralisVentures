@@ -7,7 +7,7 @@ import NewArrivals from "@/components/home/NewArrivals";
 import ShopbyCategory from "@/components/home/ShopbyCategory";
 const Page = () => {
  return (
- <div className="lg:px-4">
+ <div className="">
    <Herosection />
    <FeatureBar />
    <FlashDeals />
