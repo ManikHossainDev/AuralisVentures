@@ -57,13 +57,13 @@ const Navbar = () => {
           </button>
 
           {/* Shopping Bag */}
-          <button
-            type="button"
+          <Link
+            href="/cart"
             aria-label="Shopping bag"
             className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#DCEAE7] bg-white/30 p-2.5 text-[#667572] transition hover:bg-white/60"
           >
             <RiShoppingBagLine className="h-7 w-7" />
-          </button>
+          </Link>
 
           {/* Notification */}
           <button
