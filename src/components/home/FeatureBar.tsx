@@ -40,14 +40,14 @@ const FeatureBar = () => {
           return (
             <div
               key={index}
-              className="flex items-center gap-2 whitespace-nowrap"
+              className="flex items-center gap-2 whitespace-nowrap w"
             >
-              <div className="flex h-5 w-5 lg:h-10 lg:w-10 shrink-0 items-center justify-center rounded-full bg-[#00bfae] text-white">
+              <div className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-md background-bg text-white">
                 <Icon className="text-[16px] lg:text-[18px]" />
               </div>
 
-              <span className="text-[9px] font-normal text-[#777] lg:text-[18px]">
-                {item.text}
+              <span className="font-monda text-[10px] md:text-[16px] font-normal leading-[100%] tracking-normal gry_text lg:text-[18px]">
+                  {item.text}
               </span>
             </div>
           );

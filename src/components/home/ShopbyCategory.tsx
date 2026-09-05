@@ -1,6 +1,8 @@
+
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { FiArrowUpRight } from "react-icons/fi";
 import { Monda } from "next/font/google";
 
@@ -55,7 +57,6 @@ const ShopbyCategory = () => {
                 rounded-[9px]
                 border
                 border-[#e5e5e5]
-                bg-[#f9f9f9]
                 px-[8px]
                 pt-[10px]
                 pb-[9px]
@@ -99,7 +100,7 @@ const ShopbyCategory = () => {
                 <div className="flex min-w-0 items-center gap-1 overflow-hidden whitespace-nowrap text-[16px] text-[#777]">
                   <span>{category.products}</span>
 
-                  {category.tags.map((tag, index) => (
+                  {category.tags.map((tag) => (
                     <span key={tag} className="flex items-center gap-1">
                       <span>·</span>
                       <span>{tag}</span>
@@ -108,8 +109,10 @@ const ShopbyCategory = () => {
                 </div>
 
                 {/* ARROW */}
-                <button
-                  type="button"
+                <Link
+                  href={`/Cetagorys/?category=${encodeURIComponent(
+                    category.title
+                  )}`}
                   aria-label={`View ${category.title}`}
                   className="
                     flex
@@ -119,16 +122,15 @@ const ShopbyCategory = () => {
                     items-center
                     justify-center
                     rounded-[4px]
-                    bg-[#12c8c0]
+                    background-bg
                     text-white
                     transition-all
                     duration-300
                     hover:scale-110
-                    hover:bg-[#0db5ae]
                   "
                 >
                   <FiArrowUpRight size={20} strokeWidth={2} />
-                </button>
+                </Link>
               </div>
             </div>
           ))}

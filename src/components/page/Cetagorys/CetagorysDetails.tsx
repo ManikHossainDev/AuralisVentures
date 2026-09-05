@@ -14,10 +14,7 @@ import {
 } from "react-icons/fi";
 import { Monda } from "next/font/google";
 import Relatedproducts from "./Relatedproducts";
-
-// ======================================================
-// FONT
-// ======================================================
+import Link from "next/link";
 
 const monda = Monda({
   subsets: ["latin"],
@@ -122,10 +119,6 @@ const product = {
   rating: 4.8,
 };
 
-// ======================================================
-// PRODUCT DESCRIPTION
-// ======================================================
-
 const descriptionText =
   "Al Haramain Haneen 25 ML is a premium fragrance designed with a beautiful and long-lasting scent. Its elegant aroma makes it suitable for everyday use as well as special occasions.";
 
@@ -157,8 +150,7 @@ const productDetails: ProductDetail[] = [
 ];
 
 // ======================================================
-// REVIEW SUMMARY + LIST DATA
-// (Swap these with real data from your API)
+// REVIEWS
 // ======================================================
 
 const totalReviews = 127;
@@ -195,23 +187,16 @@ const reviews: Review[] = [
 // ======================================================
 
 const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
-  // ====================================================
-  // STATES
-  // ====================================================
-
   const [activeImage, setActiveImage] = useState<number>(0);
-
   const [quantity, setQuantity] = useState<number>(1);
 
   const [activeTab, setActiveTab] =
     useState<ActiveTab>("description");
 
-  // FIXED
   const [reviewSource, setReviewSource] = useState<
     "website" | "other"
   >("website");
 
-  // Review form state
   const [formRating, setFormRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number>(0);
   const [formName, setFormName] = useState("");
@@ -220,29 +205,27 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
   const [formReview, setFormReview] = useState("");
   const [formPhotos, setFormPhotos] = useState<File[]>([]);
 
-  // ====================================================
+  // ======================================================
   // TOTAL PRICE
-  // ====================================================
+  // ======================================================
 
   const totalPrice = product.price * quantity;
 
-  // ====================================================
-  // QUANTITY HANDLERS
-  // ====================================================
+  // ======================================================
+  // QUANTITY
+  // ======================================================
 
   const decrement = () => {
-    setQuantity((currentQuantity) =>
-      Math.max(1, currentQuantity - 1)
-    );
+    setQuantity((current) => Math.max(1, current - 1));
   };
 
   const increment = () => {
-    setQuantity((currentQuantity) => currentQuantity + 1);
+    setQuantity((current) => current + 1);
   };
 
-  // ====================================================
-  // REVIEW FORM HANDLERS
-  // ====================================================
+  // ======================================================
+  // PHOTO UPLOAD
+  // ======================================================
 
   const handlePhotoUpload = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -256,8 +239,11 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
     );
   };
 
+  // ======================================================
+  // REVIEW SUBMIT
+  // ======================================================
+
   const handleSubmitReview = () => {
-    // TODO: wire this up to your API
     console.log({
       rating: formRating,
       name: formName,
@@ -268,336 +254,313 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
     });
   };
 
-  // ====================================================
-  // RENDER
-  // ====================================================
-
   return (
-    <section className={`${monda.className} w-full py-8`}>
+    <section className={`${monda.className} w-full py-8 sm:py-10`}>
       {/* ==================================================
-          PRODUCT MAIN SECTION
+          PRODUCT SECTION
       ================================================== */}
 
-      <div className="container mx-auto flex flex-col items-start gap-8 px-4 xl:flex-row xl:px-0">
-        {/* ==================================================
-            LEFT - PRODUCT GALLERY
-        ================================================== */}
+      <div className="container mx-auto px-3 sm:px-5 xl:px-0">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[310px_minmax(0,1fr)_260px] xl:gap-8">
 
-        <div className="w-full shrink-0 xl:max-w-[300px]">
-          {/* Main Image */}
+          {/* ==================================================
+              LEFT - PRODUCT GALLERY
+          ================================================== */}
 
-          <div className="flex h-[300px] w-full items-center justify-center rounded-[12px] border border-[#e5e5e5] bg-[#f8f8f8]">
-            <Image
-              src={productImages[activeImage]}
-              alt={product.name}
-              width={260}
-              height={260}
-              unoptimized
-              priority
-              className="h-[260px] w-[260px] object-contain p-2"
-            />
-          </div>
+          <div className="w-full">
+            {/* Main Image */}
 
-          {/* Thumbnail Images */}
-
-          <div className="mt-[10px] grid grid-cols-4 gap-[8px]">
-            {productImages.map((image, index) => (
-              <button
-                key={image}
-                type="button"
-                onClick={() => setActiveImage(index)}
-                aria-label={`Show image ${index + 1}`}
-                className={`flex h-[64px] items-center justify-center rounded-[8px] border bg-[#f8f8f8] transition-all duration-200 ${
-                  activeImage === index
-                    ? "border-[#19c7c0]"
-                    : "border-[#e5e5e5] hover:border-[#bcecea]"
-                }`}
-              >
-                <Image
-                  src={image}
-                  alt={`${product.name} thumbnail ${index + 1}`}
-                  width={48}
-                  height={48}
-                  unoptimized
-                  className="h-[48px] w-[48px] object-contain"
-                />
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* ==================================================
-            MIDDLE - PRODUCT INFORMATION
-        ================================================== */}
-
-        <div className="min-w-0 w-full flex-1">
-          {/* Product Name */}
-
-          <h1 className="text-[19px] font-bold leading-[100%] tracking-[0%] text-[#202020]">
-            {product.name}
-          </h1>
-
-          {/* Rating */}
-
-          <div className="mt-[8px] flex items-center gap-[10px]">
-            <div className="flex items-center gap-[2px] text-[#facc15]">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <FiStar
-                  key={index}
-                  size={12}
-                  fill={
-                    index < Math.round(product.rating)
-                      ? "#facc15"
-                      : "none"
-                  }
-                />
-              ))}
+            <div className="flex h-[320px] w-full items-center justify-center overflow-hidden rounded-xl border border-[#e5e5e5]  sm:h-[350px]">
+              <Image
+                src={productImages[activeImage]}
+                alt={product.name}
+                width={320}
+                height={320}
+                unoptimized
+                priority
+                className="h-[290px] w-[290px] object-contain p-2 transition-transform duration-300 hover:scale-105 sm:h-[320px] sm:w-[320px]"
+              />
             </div>
 
-            <span className="text-[11px] font-normal text-[#999]">
-              ({totalReviews} reviews)
-            </span>
-          </div>
+            {/* Thumbnails */}
 
-          {/* Viewers */}
-
-          <div className="mt-[8px] flex items-center gap-[6px] text-[11px] font-normal text-[#999]">
-            <FiEye size={12} />
-
-            <span>
-              {product.viewers} People are Viewing this item
-              Right Now.
-            </span>
-          </div>
-
-          {/* Regular Price */}
-
-          <p className="mt-[18px] text-[12px] font-normal text-[#999]">
-            Regular Price:{" "}
-            <span className="line-through">
-              ৳{product.regularPrice.toLocaleString()}
-            </span>
-          </p>
-
-          {/* Current Price + Discount */}
-
-          <div className="mt-[4px] flex flex-wrap items-center gap-[10px]">
-            <span className="text-[26px] font-bold leading-[100%] tracking-[0%] text-[#202020]">
-              ৳{product.price.toLocaleString()}
-            </span>
-
-            <span className="rounded-[6px] bg-[#c8f5ef] px-[10px] py-[5px] text-[11px] font-bold leading-none text-[#18bdb5]">
-              Save {product.discountPercent}%
-            </span>
-          </div>
-
-          {/* Quantity */}
-
-          <p className="mt-[20px] text-[12px] font-bold text-[#202020]">
-            Quantity:
-          </p>
-
-          <div className="mt-[8px] flex items-center gap-[10px]">
-            {/* Minus */}
-
-            <button
-              type="button"
-              onClick={decrement}
-              disabled={quantity <= 1}
-              aria-label="Decrease quantity"
-              className="flex h-[34px] w-[34px] items-center justify-center rounded-[8px] border border-[#e5e5e5] bg-[#f5f5f5] text-[#666] transition-colors duration-200 hover:border-[#19c7c0] hover:text-[#19c7c0] disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <FiMinus size={13} />
-            </button>
-
-            {/* Quantity Number */}
-
-            <span className="flex h-[34px] w-[40px] items-center justify-center rounded-[8px] border border-[#e5e5e5] text-[13px] font-bold text-[#202020]">
-              {quantity}
-            </span>
-
-            {/* Plus */}
-
-            <button
-              type="button"
-              onClick={increment}
-              aria-label="Increase quantity"
-              className="flex h-[34px] w-[34px] items-center justify-center rounded-[8px] bg-[#333] text-white transition-colors duration-200 hover:bg-[#19c7c0]"
-            >
-              <FiPlus size={13} />
-            </button>
-          </div>
-
-          {/* Total Price */}
-
-          <p className="mt-[20px] text-[16px] font-bold leading-[100%] tracking-[0%] text-[#202020]">
-            Total Price:{" "}
-            <span className="text-[#19c7c0]">
-              ৳{totalPrice.toLocaleString()}
-            </span>
-          </p>
-
-          {/* Buttons */}
-
-          <div className="mt-[16px] flex items-center gap-[8px]">
-            {/* Buy Now */}
-
-            <button
-              type="button"
-              className="flex h-[42px] items-center justify-center gap-[8px] rounded-[10px] bg-[#19c7c0] px-[26px] text-[13px] font-normal leading-[100%] tracking-[0%] text-white transition-colors duration-200 hover:bg-[#149c96]"
-            >
-              Buy Now
-
-              <FiArrowRight size={14} />
-            </button>
-
-            {/* Add To Cart */}
-
-            <button
-              type="button"
-              aria-label="Add to cart"
-              className="flex h-[42px] w-[42px] items-center justify-center rounded-[10px] border border-[#e5e5e5] bg-[#f5f5f5] text-[#b7b7b7] transition-all duration-200 hover:border-[#19c7c0] hover:bg-[#e5fafa] hover:text-[#19c7c0]"
-            >
-              <FiShoppingBag size={16} />
-            </button>
-          </div>
-
-          {/* Category ID */}
-
-          <p className="mt-4 text-[10px] text-gray-400">
-            Category ID: {id}
-          </p>
-        </div>
-
-        {/* ==================================================
-            RIGHT - TOP SELLING PRODUCTS
-        ================================================== */}
-
-        <aside className="w-full shrink-0 rounded-[10px] border border-[#e5e5e5] bg-white p-[14px] xl:max-w-[240px]">
-          <h2 className="mb-[10px] text-[13px] font-bold leading-[100%] tracking-[0%] text-[#202020]">
-            Top Selling Products
-          </h2>
-
-          <div className="flex flex-col divide-y divide-[#ececec]">
-            {topSellingProducts.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center gap-[10px] py-[10px]"
-              >
-                {/* Product Image */}
-
-                <div className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[8px] bg-[#f7f7f7]">
+            <div className="mt-3 grid grid-cols-4 gap-2">
+              {productImages.map((image, index) => (
+                <button
+                  key={image}
+                  type="button"
+                  onClick={() => setActiveImage(index)}
+                  aria-label={`Show image ${index + 1}`}
+                  className={`flex h-[72px] items-center justify-center overflow-hidden rounded-lg border  transition-all duration-200 sm:h-[78px] ${
+                    activeImage === index
+                      ? "border-[#19c7c0] shadow-sm"
+                      : "border-[#e5e5e5] hover:border-[#bcecea]"
+                  }`}
+                >
                   <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={36}
-                    height={36}
+                    src={image}
+                    alt={`${product.name} thumbnail ${index + 1}`}
+                    width={60}
+                    height={60}
                     unoptimized
-                    className="h-[36px] w-[36px] object-contain"
+                    className="h-[58px] w-[58px] object-contain"
                   />
-                </div>
+                </button>
+              ))}
+            </div>
+          </div>
 
-                {/* Product Info */}
+          {/* ==================================================
+              MIDDLE - PRODUCT INFORMATION
+          ================================================== */}
 
-                <div className="min-w-0">
-                  <p className="truncate text-[11px] font-bold leading-[100%] tracking-[0%] text-[#292929]">
-                    {item.name}
-                  </p>
+          <div className="min-w-0 w-full">
+            {/* Product Name */}
 
-                  <div className="mt-[6px] flex items-center gap-[6px]">
-                    <span className="text-[12px] font-bold text-[#222]">
-                      ৳{item.price.toLocaleString()}
-                    </span>
+            <h1 className="text-[22px] font-bold leading-tight text-[#202020] sm:text-[25px]">
+              {product.name}
+            </h1>
 
-                    <span className="text-[10px] font-normal text-[#999] line-through">
-                      ৳{item.oldPrice.toLocaleString()}
-                    </span>
+            {/* Rating */}
+
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-1 text-[#facc15]">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <FiStar
+                    key={index}
+                    size={15}
+                    fill={
+                      index < Math.round(product.rating)
+                        ? "#facc15"
+                        : "none"
+                    }
+                  />
+                ))}
+              </div>
+
+              <span className="text-xs text-[#999]">
+                {product.rating} ({totalReviews} reviews)
+              </span>
+            </div>
+
+            {/* Viewers */}
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-[#888]">
+              <FiEye size={14} />
+
+              <span>
+                {product.viewers} people are viewing this item right
+                now
+              </span>
+            </div>
+
+            {/* Price */}
+
+            <div className="mt-6 border-y border-[#eeeeee] py-5">
+              <p className="text-xs text-[#999]">
+                Regular Price:{" "}
+                <span className="line-through">
+                  ৳{product.regularPrice.toLocaleString()}
+                </span>
+              </p>
+
+              <div className="mt-2 flex flex-wrap items-center gap-3">
+                <span className="text-[30px] font-bold leading-none text-[#202020] sm:text-[32px]">
+                  ৳{product.price.toLocaleString()}
+                </span>
+
+                <span className="rounded-md bg-[#c8f5ef] px-3 py-1.5 text-xs font-bold text-[#18bdb5]">
+                  Save {product.discountPercent}%
+                </span>
+              </div>
+            </div>
+
+            {/* Quantity */}
+
+            <div className="mt-5">
+              <p className="text-sm font-bold text-[#202020]">
+                Quantity
+              </p>
+
+              <div className="mt-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={decrement}
+                  disabled={quantity <= 1}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#e5e5e5] bg-[#f7f7f7] text-[#555] transition hover:border-[#19c7c0] hover:text-[#19c7c0] disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <FiMinus size={14} />
+                </button>
+
+                <span className="flex h-9 min-w-[48px] items-center justify-center rounded-lg border border-[#e5e5e5] bg-white px-3 text-sm font-bold text-[#202020]">
+                  {quantity}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={increment}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#333] text-white transition hover:bg-[#19c7c0]"
+                >
+                  <FiPlus size={14} />
+                </button>
+              </div>
+            </div>
+
+            {/* Total */}
+
+            <div className="mt-5 flex items-center gap-2">
+              <span className="text-sm font-semibold text-[#555]">
+                Total Price:
+              </span>
+
+              <span className="text-lg font-bold text-[#19c7c0]">
+                ৳{totalPrice.toLocaleString()}
+              </span>
+            </div>
+
+            {/* Buttons */}
+
+            <div className="mt-5 flex items-center gap-2">
+              <Link href="/checkout"
+                type="button"
+                className="flex h-11 items-center background-bg justify-center gap-2 rounded-lg  px-7 text-sm font-bold text-white transition hover:bg-[#149c96]"
+              >
+                Buy Now
+                <FiArrowRight size={15} />
+              </Link>
+
+              <button
+                type="button"
+                aria-label="Add to cart"
+                className="flex h-11 w-11 items-center justify-center rounded-lg border border-[#e5e5e5] bg-[#f5f5f5] text-[#999] transition hover:border-[#19c7c0] hover:bg-[#e5fafa] hover:text-[#19c7c0]"
+              >
+                <FiShoppingBag size={17} />
+              </button>
+            </div>
+
+            <p className="mt-4 text-[11px] text-[#aaa]">
+              Category ID: {id}
+            </p>
+          </div>
+
+          {/* ==================================================
+              RIGHT - TOP SELLING
+          ================================================== */}
+
+          <aside className="w-full rounded-xl border border-[#e5e5e5] bg-white p-4">
+            <h2 className="mb-2 text-sm font-bold text-[#202020]">
+              Top Selling Products
+            </h2>
+
+            <div className="divide-y divide-[#eeeeee]">
+              {topSellingProducts.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center gap-3 py-3"
+                >
+                  {/* Image */}
+
+                  <div className="flex h-[56px] w-[56px] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#f7f7f7]">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={48}
+                      height={48}
+                      unoptimized
+                      className="h-[48px] w-[48px] object-contain"
+                    />
+                  </div>
+
+                  {/* Info */}
+
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-xs font-bold text-[#292929]">
+                      {item.name}
+                    </p>
+
+                    <div className="mt-1.5 flex items-center gap-2">
+                      <span className="text-sm font-bold text-[#222]">
+                        ৳{item.price.toLocaleString()}
+                      </span>
+
+                      <span className="text-[10px] text-[#999] line-through">
+                        ৳{item.oldPrice.toLocaleString()}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </aside>
+              ))}
+            </div>
+          </aside>
+        </div>
       </div>
 
       {/* ==================================================
           DESCRIPTION / REVIEWS
       ================================================== */}
 
-      <div className="container mx-auto mt-10 px-4 xl:px-0">
+      <div className="container mx-auto mt-12 px-3 sm:px-5 xl:px-0">
         {/* Tabs */}
 
-        <div className="flex items-center gap-[28px] border-b border-[#e5e5e5]">
-          {/* Description Tab */}
-
+        <div className="flex items-center gap-7 border-b border-[#e5e5e5]">
           <button
             type="button"
             onClick={() => setActiveTab("description")}
-            className={`relative pb-[12px] text-[15px] font-bold transition-colors duration-200 ${
+            className={`relative pb-3 text-sm font-bold transition ${
               activeTab === "description"
                 ? "text-[#202020]"
-                : "text-[#b3b3b3]"
+                : "text-[#aaa]"
             }`}
           >
             Description
 
             {activeTab === "description" && (
-              <span className="absolute bottom-0 left-0 h-[2px] w-full rounded-full bg-[#19c7c0]" />
+              <span className="absolute bottom-0 left-0 h-0.5 w-full rounded-full bg-[#19c7c0]" />
             )}
           </button>
-
-          {/* Reviews Tab */}
 
           <button
             type="button"
             onClick={() => setActiveTab("reviews")}
-            className={`relative pb-[12px] text-[15px] font-bold transition-colors duration-200 ${
+            className={`relative pb-3 text-sm font-bold transition ${
               activeTab === "reviews"
                 ? "text-[#202020]"
-                : "text-[#b3b3b3]"
+                : "text-[#aaa]"
             }`}
           >
             Reviews
 
             {activeTab === "reviews" && (
-              <span className="absolute bottom-0 left-0 h-[2px] w-full rounded-full bg-[#19c7c0]" />
+              <span className="absolute bottom-0 left-0 h-0.5 w-full rounded-full bg-[#19c7c0]" />
             )}
           </button>
         </div>
 
         {/* ==================================================
-            TAB CONTENT
+            DESCRIPTION
         ================================================== */}
 
         {activeTab === "description" ? (
-          // ==================================================
-          // DESCRIPTION TAB
-          // ==================================================
-
-          <div className="pt-[20px]">
-            {/* Description */}
-
-            <p className="text-[13px] font-normal leading-[22px] text-[#666]">
+          <div className="pt-6">
+            <p className="max-w-4xl text-sm leading-7 text-[#666]">
               {descriptionText}
             </p>
 
-            {/* Product Details */}
-
-            <div className="mt-[20px] flex flex-col gap-[10px]">
+            <div className="mt-6 flex flex-col gap-3">
               {productDetails.map((row) => (
                 <div
                   key={row.label}
-                  className="flex flex-col text-[13px] sm:flex-row"
+                  className="grid grid-cols-1 gap-1 text-sm sm:grid-cols-[180px_20px_1fr]"
                 >
-                  <span className="w-full shrink-0 font-normal text-[#666] sm:w-[220px]">
+                  <span className="font-medium text-[#666]">
                     {row.label}
                   </span>
 
-                  <span className="mr-[10px] hidden text-[#666] sm:block">
+                  <span className="hidden text-[#aaa] sm:block">
                     :
                   </span>
 
-                  <span className="font-normal text-[#666]">
+                  <span className="text-[#666]">
                     {row.value}
                   </span>
                 </div>
@@ -605,26 +568,24 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
             </div>
           </div>
         ) : (
-          // ==================================================
-          // REVIEWS TAB
-          // ==================================================
+          /* ==================================================
+             REVIEWS
+          ================================================== */
 
-          <div className="pt-[20px]">
-            {/* Rating Summary + Review List */}
-
+          <div className="pt-6">
             <div className="flex flex-col gap-6 lg:flex-row">
               {/* Rating Summary */}
 
-              <div className="w-full shrink-0 rounded-[12px] border border-[#e5e5e5] bg-white p-[18px] lg:max-w-[220px]">
-                <p className="text-center text-[28px] font-bold text-[#202020]">
+              <div className="w-full shrink-0 rounded-xl border border-[#e5e5e5] bg-white p-5 lg:max-w-[240px]">
+                <p className="text-center text-[32px] font-bold text-[#202020]">
                   {product.rating}
                 </p>
 
-                <div className="mt-[4px] flex items-center justify-center gap-[2px] text-[#facc15]">
+                <div className="mt-1 flex justify-center gap-1 text-[#facc15]">
                   {Array.from({ length: 5 }).map((_, index) => (
                     <FiStar
                       key={index}
-                      size={14}
+                      size={15}
                       fill={
                         index < Math.round(product.rating)
                           ? "#facc15"
@@ -634,38 +595,37 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                   ))}
                 </div>
 
-                <p className="mt-[4px] text-center text-[11px] text-[#999]">
+                <p className="mt-2 text-center text-xs text-[#999]">
                   Based on {totalReviews} reviews
                 </p>
 
-                <div className="mt-[16px] flex flex-col gap-[8px]">
+                <div className="mt-5 flex flex-col gap-2.5">
                   {ratingBreakdown.map((row) => (
                     <div
                       key={row.star}
-                      className="flex items-center gap-[6px] text-[11px] text-[#666]"
+                      className="flex items-center gap-2 text-xs text-[#666]"
                     >
-                      <span className="w-[16px] shrink-0">
-                        {row.star}
-                      </span>
+                      <span className="w-3">{row.star}</span>
 
                       <FiStar
-                        size={10}
+                        size={11}
                         fill="#facc15"
                         className="shrink-0 text-[#facc15]"
                       />
 
-                      <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-[#e5e5e5]">
+                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#e5e5e5]">
                         <div
                           className="h-full rounded-full bg-[#19c7c0]"
                           style={{
-                            width: `${
-                              (row.count / totalReviews) * 100
-                            }%`,
+                            width: `${Math.min(
+                              (row.count / totalReviews) * 100,
+                              100
+                            )}%`,
                           }}
                         />
                       </div>
 
-                      <span className="w-[24px] shrink-0 text-right">
+                      <span className="w-6 text-right">
                         {row.count}
                       </span>
                     </div>
@@ -676,13 +636,13 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
               {/* Review List */}
 
               <div className="w-full flex-1">
-                {/* Source Filter */}
+                {/* Filter */}
 
-                <div className="mb-[16px] flex items-center gap-[10px]">
+                <div className="mb-5 flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={() => setReviewSource("website")}
-                    className={`rounded-[8px] px-[16px] py-[8px] text-[12px] font-bold transition-colors duration-200 ${
+                    className={`rounded-lg px-4 py-2 text-xs font-bold transition ${
                       reviewSource === "website"
                         ? "bg-[#19c7c0] text-white"
                         : "border border-[#e5e5e5] bg-white text-[#666] hover:border-[#19c7c0]"
@@ -694,7 +654,7 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                   <button
                     type="button"
                     onClick={() => setReviewSource("other")}
-                    className={`rounded-[8px] px-[16px] py-[8px] text-[12px] font-bold transition-colors duration-200 ${
+                    className={`rounded-lg px-4 py-2 text-xs font-bold transition ${
                       reviewSource === "other"
                         ? "bg-[#19c7c0] text-white"
                         : "border border-[#e5e5e5] bg-white text-[#666] hover:border-[#19c7c0]"
@@ -704,39 +664,39 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                   </button>
                 </div>
 
-                {/* Review Cards */}
+                {/* Reviews */}
 
                 {reviews.length === 0 ? (
-                  <p className="text-[13px] text-[#999]">
+                  <p className="text-sm text-[#999]">
                     No reviews yet.
                   </p>
                 ) : (
-                  <div className="flex flex-col gap-[18px]">
+                  <div className="flex flex-col gap-5">
                     {reviews.map((review) => (
                       <div
                         key={review.id}
-                        className="border-b border-[#ececec] pb-[18px] last:border-b-0"
+                        className="border-b border-[#ececec] pb-5 last:border-b-0"
                       >
-                        {/* Reviewer Info */}
+                        {/* Reviewer */}
 
-                        <div className="flex items-center gap-[10px]">
-                          <div className="h-[36px] w-[36px] shrink-0 overflow-hidden rounded-full bg-[#f0f0f0]">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[#f0f0f0]">
                             <Image
                               src={review.avatar}
                               alt={review.name}
-                              width={36}
-                              height={36}
+                              width={40}
+                              height={40}
                               unoptimized
                               className="h-full w-full object-cover"
                             />
                           </div>
 
                           <div>
-                            <p className="text-[13px] font-bold text-[#202020]">
+                            <p className="text-sm font-bold text-[#202020]">
                               {review.name}
                             </p>
 
-                            <p className="text-[11px] text-[#999]">
+                            <p className="mt-0.5 text-[11px] text-[#999]">
                               {review.date} - {review.location}
                             </p>
                           </div>
@@ -744,13 +704,13 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
 
                         {/* Rating */}
 
-                        <div className="mt-[8px] flex items-center gap-[6px]">
-                          <div className="flex items-center gap-[2px] text-[#facc15]">
+                        <div className="mt-2 flex items-center gap-2">
+                          <div className="flex gap-0.5 text-[#facc15]">
                             {Array.from({ length: 5 }).map(
                               (_, index) => (
                                 <FiStar
                                   key={index}
-                                  size={12}
+                                  size={13}
                                   fill={
                                     index < review.rating
                                       ? "#facc15"
@@ -761,28 +721,28 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                             )}
                           </div>
 
-                          <span className="text-[11px] font-bold text-[#666]">
+                          <span className="text-xs font-bold text-[#666]">
                             {review.rating.toFixed(1)}
                           </span>
                         </div>
 
-                        {/* Review Images */}
+                        {/* Images */}
 
                         {review.images &&
                           review.images.length > 0 && (
-                            <div className="mt-[10px] flex gap-[8px]">
+                            <div className="mt-3 flex gap-2">
                               {review.images.map((img, index) => (
                                 <div
                                   key={index}
-                                  className="h-[56px] w-[56px] overflow-hidden rounded-[8px] bg-[#f0f0f0]"
+                                  className="h-16 w-16 overflow-hidden rounded-lg bg-[#f0f0f0]"
                                 >
                                   <Image
                                     src={img}
                                     alt={`${review.title} photo ${
                                       index + 1
                                     }`}
-                                    width={56}
-                                    height={56}
+                                    width={64}
+                                    height={64}
                                     unoptimized
                                     className="h-full w-full object-cover"
                                   />
@@ -791,13 +751,13 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                             </div>
                           )}
 
-                        {/* Title + Content */}
+                        {/* Content */}
 
-                        <p className="mt-[10px] text-[13px] font-bold text-[#202020]">
+                        <p className="mt-3 text-sm font-bold text-[#202020]">
                           {review.title}
                         </p>
 
-                        <p className="mt-[6px] text-[13px] leading-[22px] text-[#666]">
+                        <p className="mt-1.5 max-w-4xl text-sm leading-6 text-[#666]">
                           {review.content}
                         </p>
                       </div>
@@ -808,27 +768,27 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
             </div>
 
             {/* ==================================================
-                WRITE A REVIEW FORM
+                WRITE REVIEW
             ================================================== */}
 
-            <div className="mt-[32px] rounded-[12px] border border-[#e5e5e5] bg-white p-[20px]">
-              <h3 className="text-[15px] font-bold text-[#202020]">
+            <div className="mt-8 rounded-xl border border-[#e5e5e5] bg-white p-5 sm:p-6">
+              <h3 className="text-base font-bold text-[#202020]">
                 Write a Review
               </h3>
 
-              <p className="mt-[4px] text-[12px] text-[#999]">
+              <p className="mt-1 text-xs text-[#999]">
                 Share your experience with this product to help
                 other customers.
               </p>
 
-              {/* Rating Input */}
+              {/* Rating */}
 
-              <p className="mt-[20px] text-[13px] font-bold text-[#202020]">
+              <p className="mt-6 text-sm font-bold text-[#202020]">
                 Your Rating{" "}
                 <span className="text-red-500">*</span>
               </p>
 
-              <div className="mt-[8px] flex items-center gap-[4px]">
+              <div className="mt-2 flex gap-1">
                 {Array.from({ length: 5 }).map((_, index) => {
                   const starValue = index + 1;
 
@@ -842,10 +802,9 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                         setHoverRating(starValue)
                       }
                       onMouseLeave={() => setHoverRating(0)}
-                      className="text-[#d9d9d9]"
                     >
                       <FiStar
-                        size={22}
+                        size={24}
                         fill={
                           starValue <=
                           (hoverRating || formRating)
@@ -866,9 +825,9 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
 
               {/* Name + Email */}
 
-              <div className="mt-[18px] grid grid-cols-1 gap-[14px] sm:grid-cols-2">
+              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="text-[13px] font-bold text-[#202020]">
+                  <label className="text-sm font-bold text-[#202020]">
                     Your Name{" "}
                     <span className="text-red-500">*</span>
                   </label>
@@ -877,13 +836,13 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                     type="text"
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
-                    placeholder="your name"
-                    className="mt-[8px] h-[42px] w-full rounded-[8px] border border-[#e5e5e5] px-[14px] text-[13px] text-[#202020] outline-none transition-colors duration-200 focus:border-[#19c7c0]"
+                    placeholder="Your name"
+                    className="mt-2 h-11 w-full rounded-lg border border-[#e5e5e5] px-3 text-sm text-[#202020] outline-none transition focus:border-[#19c7c0]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[13px] font-bold text-[#202020]">
+                  <label className="text-sm font-bold text-[#202020]">
                     Email Address{" "}
                     <span className="text-red-500">*</span>
                   </label>
@@ -892,16 +851,16 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                     type="email"
                     value={formEmail}
                     onChange={(e) => setFormEmail(e.target.value)}
-                    placeholder="your name"
-                    className="mt-[8px] h-[42px] w-full rounded-[8px] border border-[#e5e5e5] px-[14px] text-[13px] text-[#202020] outline-none transition-colors duration-200 focus:border-[#19c7c0]"
+                    placeholder="Your email"
+                    className="mt-2 h-11 w-full rounded-lg border border-[#e5e5e5] px-3 text-sm text-[#202020] outline-none transition focus:border-[#19c7c0]"
                   />
                 </div>
               </div>
 
               {/* Review Title */}
 
-              <div className="mt-[14px]">
-                <label className="text-[13px] font-bold text-[#202020]">
+              <div className="mt-4">
+                <label className="text-sm font-bold text-[#202020]">
                   Review Title{" "}
                   <span className="text-red-500">*</span>
                 </label>
@@ -910,15 +869,15 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                   type="text"
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
-                  placeholder="Summaries your experience in one line..."
-                  className="mt-[8px] h-[42px] w-full rounded-[8px] border border-[#e5e5e5] px-[14px] text-[13px] text-[#202020] outline-none transition-colors duration-200 focus:border-[#19c7c0]"
+                  placeholder="Summarize your experience in one line..."
+                  className="mt-2 h-11 w-full rounded-lg border border-[#e5e5e5] px-3 text-sm text-[#202020] outline-none transition focus:border-[#19c7c0]"
                 />
               </div>
 
-              {/* Review Content */}
+              {/* Review */}
 
-              <div className="mt-[14px]">
-                <label className="text-[13px] font-bold text-[#202020]">
+              <div className="mt-4">
+                <label className="text-sm font-bold text-[#202020]">
                   Your Review{" "}
                   <span className="text-red-500">*</span>
                 </label>
@@ -926,30 +885,33 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
                 <textarea
                   value={formReview}
                   onChange={(e) => setFormReview(e.target.value)}
-                  placeholder="Tell others what you liked or didn't like. Was the scent as described? How was the packaging and delivery?"
-                  rows={4}
-                  className="mt-[8px] w-full resize-none rounded-[8px] border border-[#e5e5e5] px-[14px] py-[10px] text-[13px] text-[#202020] outline-none transition-colors duration-200 focus:border-[#19c7c0]"
+                  placeholder="Tell others what you liked or didn't like..."
+                  rows={5}
+                  className="mt-2 w-full resize-none rounded-lg border border-[#e5e5e5] px-3 py-3 text-sm text-[#202020] outline-none transition focus:border-[#19c7c0]"
                 />
               </div>
 
               {/* Photo Upload */}
 
-              <div className="mt-[14px]">
-                <label className="text-[13px] font-bold text-[#202020]">
-                  Add Photos (optional)
+              <div className="mt-4">
+                <label className="text-sm font-bold text-[#202020]">
+                  Add Photos{" "}
+                  <span className="font-normal text-[#999]">
+                    (optional)
+                  </span>
                 </label>
 
                 <label
                   htmlFor="review-photo-upload"
-                  className="mt-[8px] flex h-[42px] w-full cursor-pointer items-center gap-[8px] rounded-[8px] border border-dashed border-[#e5e5e5] px-[14px] text-[12px] text-[#999] transition-colors duration-200 hover:border-[#19c7c0]"
+                  className="mt-2 flex h-11 w-full cursor-pointer items-center gap-2 rounded-lg border border-dashed border-[#e5e5e5] px-3 text-xs text-[#999] transition hover:border-[#19c7c0]"
                 >
-                  <FiImage size={14} />
+                  <FiImage size={15} />
 
                   {formPhotos.length > 0
                     ? `${formPhotos.length} photo${
                         formPhotos.length > 1 ? "s" : ""
                       } selected`
-                    : "Click to upload photos of the product (max 3 images)"}
+                    : "Click to upload photos (max 3 images)"}
                 </label>
 
                 <input
@@ -964,18 +926,17 @@ const CetagorysDetails = ({ id }: CetagorysDetailsProps) => {
 
               {/* Submit */}
 
-              <div className="mt-[18px] flex flex-wrap items-center gap-[14px]">
+              <div className="mt-5 flex flex-wrap items-center gap-4">
                 <button
                   type="button"
                   onClick={handleSubmitReview}
-                  className="flex h-[42px] items-center justify-center gap-[8px] rounded-[10px] bg-[#19c7c0] px-[22px] text-[13px] font-bold text-white transition-colors duration-200 hover:bg-[#149c96]"
+                  className="flex h-11 items-center justify-center gap-2 rounded-lg bg-[#19c7c0] px-6 text-sm font-bold text-white transition hover:bg-[#149c96]"
                 >
                   Submit Review
-
-                  <FiSend size={13} />
+                  <FiSend size={14} />
                 </button>
 
-                <span className="text-[11px] text-[#999]">
+                <span className="text-xs text-[#999]">
                   Reviews are published after a brief verification
                   check.
                 </span>

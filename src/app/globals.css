@@ -25,7 +25,15 @@ html {
 body {
   font-family: "Monda", sans-serif;
   font-optical-sizing: auto;
-  background-color: var(--cream);
+  background-color: #FFFFFF;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+}
+
+.background-bg {
+  background-color: #171717;
+}
+
+.gry_text {
+  color: #737373;
 }
